@@ -106,7 +106,7 @@ final class WebViewModel: WebViewModelProtocol {
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: Reverse Injection
-    func setWebView(_ webView: WKWebView) {
+    @MainActor func setWebView(_ webView: WKWebView) {
         self.webView = webView
 
         webView.publisher(for: \.estimatedProgress)
@@ -155,13 +155,13 @@ final class WebViewModel: WebViewModelProtocol {
         webView.scrollView.refreshControl = refreshControl
     }
 
-    @objc func reloadWebView(_ sender: UIRefreshControl) {
+    @MainActor @objc func reloadWebView(_ sender: UIRefreshControl) {
         webView?.reload()
         sender.endRefreshing()
     }
 
     // MARK: Web Action
-    func search(
+    @MainActor func search(
         with text: String,
         userDefaults: UserDefaults = UserDefaults.standard
     ) {
@@ -182,19 +182,19 @@ final class WebViewModel: WebViewModelProtocol {
         }
     }
 
-    func goBack() {
+    @MainActor func goBack() {
         if let webView, webView.canGoBack {
             webView.goBack()
         }
     }
 
-    func goForward() {
+    @MainActor func goForward() {
         if let webView, webView.canGoForward {
             webView.goForward()
         }
     }
 
-    func reload() {
+    @MainActor func reload() {
         webView?.reload()
     }
 

@@ -32,7 +32,7 @@ struct LegacyAlertModifier: ViewModifier {
         }
     }
 
-    private func makeAlertController() -> UIAlertController {
+    @MainActor private func makeAlertController() -> UIAlertController {
         let alertController = UIAlertController(title: "",
                                                 message: webDialog.message,
                                                 preferredStyle: .alert)

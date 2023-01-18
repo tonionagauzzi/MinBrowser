@@ -66,7 +66,7 @@ struct BookmarkView: View {
         .background(Color.systemGray6)
     }
 
-    func bookmarkList() -> some View {
+    @MainActor func bookmarkList() -> some View {
         List {
             Section {
                 if bookmarks.isEmpty {
