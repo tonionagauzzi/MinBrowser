@@ -48,13 +48,13 @@ protocol WebViewModelProtocol: ObservableObject {
     var hideToolBar: Bool { get set }
 
     // MARK: Reverse Injection
-    func setWebView(_ webView: WKWebView)
+    func setWebView(_ webView: WKWebView) async
 
     // MARK: Web Action
-    func search(with text: String, userDefaults: UserDefaults)
-    func goBack()
-    func goForward()
-    func reload()
+    func search(with text: String, userDefaults: UserDefaults) async
+    func goBack() async
+    func goForward() async
+    func reload() async
 
     // MARK: JS Alert
     func showAlert(
@@ -80,8 +80,8 @@ protocol WebViewModelProtocol: ObservableObject {
 }
 
 extension WebViewModelProtocol {
-    func search(with text: String) {
-        search(with: text, userDefaults: UserDefaults.standard)
+    func search(with text: String) async {
+        await search(with: text, userDefaults: UserDefaults.standard)
     }
 }
 
@@ -251,3 +251,5 @@ final class WebViewModel: WebViewModelProtocol {
         }
     }
 }
+
+extension UserDefaults: @unchecked Sendable {}

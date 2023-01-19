@@ -21,7 +21,7 @@ extension WKWebView: WKScriptMessageHandler {
         self.configuration.userContentController.addUserScript(script)
     }
 
-    public func userContentController(
+    nonisolated public func userContentController(
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage
     ) {

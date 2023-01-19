@@ -119,3 +119,5 @@ struct WrappedWKWebView: UIViewRepresentable {
         }
     }
 }
+
+extension WKNavigation: @unchecked Sendable {}

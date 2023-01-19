@@ -18,7 +18,9 @@ struct WebView<T: WebViewModelProtocol>: View {
                         SearchBar(
                             inputText: $viewModel.inputText,
                             searchHandler: { inputText in
-                                viewModel.search(with: inputText)
+                                Task {
+                                    await viewModel.search(with: inputText)
+                                }
                             }
                         )
                         ProgressView(value: viewModel.estimatedProgress)
@@ -28,7 +30,9 @@ struct WebView<T: WebViewModelProtocol>: View {
                 }
                 ZStack(alignment: .center) {
                     WrappedWKWebView(setWebViewHandler: { webView in
-                        viewModel.setWebView(webView)
+                        Task {
+                            await viewModel.setWebView(webView)
+                        }
                     }, showAlertHandler: { message, completion in
                         viewModel.showAlert(message, completion)
                     }, showConfirmHandler: { message, completion in
@@ -46,10 +50,14 @@ struct WebView<T: WebViewModelProtocol>: View {
                         canGoBack: $viewModel.canGoBack,
                         canGoForward: $viewModel.canGoForward,
                         goBackHandler: {
-                            viewModel.goBack()
+                            Task {
+                                await viewModel.goBack()
+                            }
                         },
                         goForwardHandler: {
-                            viewModel.goForward()
+                            Task {
+                                await viewModel.goForward()
+                            }
                         },
                         bookmarkHandler: {
                             viewModel.showBookmark = true
@@ -72,11 +80,15 @@ struct WebView<T: WebViewModelProtocol>: View {
                 if let fragment = url.fragment {
                     link += "#\(fragment)"
                 }
-                viewModel.search(with: link)
+                Task {
+                    await viewModel.search(with: link)
+                }
             }
             if queryItem.name == "plaintext", let plainText = queryItem.value {
                 // plainText is already removed percent-encoding.
-                viewModel.search(with: plainText)
+                Task {
+                    await viewModel.search(with: plainText)
+                }
             }
         })
         .sheet(isPresented: $viewModel.showBookmark) {
@@ -87,7 +99,9 @@ struct WebView<T: WebViewModelProtocol>: View {
                     viewModel.showBookmark = false
                 }, loadBookmarkHandler: { url in
                     viewModel.showBookmark = false
-                    viewModel.search(with: url)
+                    Task {
+                        await viewModel.search(with: url)
+                    }
                 }
             )
         }
